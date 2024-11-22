@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "azaan-app-440709",
+  "private_key_id": "f1821883fe5a174d922211ea5cffb1a125db5a77",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDDlZGvtJUNprBn\ngvY7CNFDYFaOb/g0aRy/sHUAR4qoLHzV7c5w+RswDEQylwEsLPrcEC5zBfUikr8C\nYstzvQXjhfUAAlvPr6gV95dkKYvm/PxA4m9tpjZdl3VQSy0xaqYK9eGgEn+53mhN\nDunaIILzxERnpNndSM0opNyQ2HEEUtI4OIKc5ysi9avz0ElzebI3Z4VzDL0AuzAZ\nitBauWeGHs/uGEYYNPObl9mvzpDZ21muEvImBclmYqXYAho8Z4VsRFXf/vrtKBkg\nXN7lkL7LAz+a2GF49aRyO/ePRKErbbSb3BX+3PfkghIQRw17cQXjFbdJ7tyAbZxb\nzmqjseALAgMBAAECggEAKslQqrCFnwvlMW/b8AQ4y1WK+fQSx1xrVqACqIH+GlZJ\nJP+2Fs7YHMXCMZMJRaG9a2D62FzoSJzzvlDgkzw5ypFmjI73iNKzocKdUuMn4Otd\nP9CJceJXqFfW6S7Y/yOGmYU6y6rgWEgIZzso+3f7TdqU4FuW8arYfti6C9Hdv4UA\niYnERtts2FZbFTDP+t6GQN478xal7aEKv+6PJJz10u+rfVr13jSMbAd6WRpiugbu\ngJ7ckbNiYlTSbRuKImqPBXULclftHXoec4h4kMAhjd0tUvvthORA+tWnINEajGcC\nMW1b1RLj88vgH5k2TQRufQWtNTYemQaQMP06WvZWkQKBgQDze6aBZctJykl4j5g7\nm8tSIgiBKCGfgMAPoXbLg/iHvgR6mxIByh2+RBY1we+DzjQ6rESIeGdPSuR7T6jn\nj0dUq2D5BundaKFgHJpGY5GzLPUocccOOxAPPO7bUUm+b21n70OUg1KP1i00AUut\nE2ditvUhPuWu44udPJY3u0TJ8wKBgQDNo4x9lpuJki7TtbcT7+J+l5p2WbFDBy+0\np9ZTT/48sA9ct1lGX5T98Uh+p08+Gyz6MjmZLsWGvJE0caLnHGQtigQKaxDNyK2U\nE7mF7weg7bJ3777pRS+iMBgGgMrrEGVjk1ZvML9LkEWesoSi/Kg04uEj1rrmvXwb\nYMLTbdU/iQKBgQDrvocitkq0MXYdkvrUjC26YlVVqGOVqfVLrQv2VNrnoyV3CHnQ\n3b8an5XZiuK6/YY4YN8iO2Hbtimu8xwYx/NKmXyU4QrCYzIMeuUsze8eSqM7+529\nu5X7CwZBt1ztU7ncbh9CxjvEJJ0zwyVgeG8bdwW0oM+GG67sGONhJqKd3QKBgF3o\nGfggFtc0En5LtVc9bMkyoi75tqFNXtO48X8KQKemHt3QPMyOSZPN47Uy4lUSQ+/d\nj8AMQ9fLtOOmISY5KOZC6KV5TysqQVolx8sJ5QnwgleS/DO6jI4cOFx/5CqESki2\nt/n+4Ny4/ZIDI97qUkYUdYvQO3mzfkFiZpX2yjNBAoGBANUhaNqDT0rmhx9HHSOo\naT2zAuywHva/X0V6IkJ9NB/8RAgtoy4ZLPntCIOEmtYe2e+rpt8Svw1H2J9HdWpI\nDLi4vbh1A2Uf0wSK3q+7eIruNB3v4H6nUhf/FuT+exLetvyiZL0pWDbsVxb8RyDR\nkqJ1S0PVRgVut4S7FxYooNml\n-----END PRIVATE KEY-----\n",
+  "client_email": "speech-demo@azaan-app-440709.iam.gserviceaccount.com",
+  "client_id": "110073685297803332786",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/speech-demo%40azaan-app-440709.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}

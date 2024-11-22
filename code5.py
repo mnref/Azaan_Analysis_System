@@ -669,16 +669,17 @@ from fuzzywuzzy import fuzz
 from scipy.stats import pearsonr
 import json
 
-# Set OpenAI API key
-openai.api_key = "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"  # Replace with your actual OpenAI API Key
+
+openai.api_key = st.secrets["openai"] # Replace with your actual OpenAI API Key
 
 # Set Google Cloud Service Account credentials
-SERVICE_ACCOUNT_FILE = r"C:\Users\USER\Downloads\gcp_api.json"  # Update this path
+google_creds = st.secrets["google"]
 
-# Initialize Google Cloud clients
-credentials = service_account.Credentials.from_service_account_file(SERVICE_ACCOUNT_FILE)
+# Initialize the Google Cloud clients with the credentials
+credentials = service_account.Credentials.from_service_account_info(google_creds)
 speech_client = speech.SpeechClient(credentials=credentials)
 storage_client = storage.Client(credentials=credentials)
+
 
 # Predefined data
 predefined_spectrograms = {
@@ -1237,7 +1238,7 @@ import io
 
 def setup_arabic_font():
     # Register Arabic font - ensure this font file exists in your project
-    font_path = r"C:\Users\USER\Downloads\Amiri-Regular.ttf"  # Update with actual path
+    font_path = r"Amiri-Regular.ttf"  # Update with actual path
     pdfmetrics.registerFont(TTFont('Arabic', font_path))
     
 from reportlab.pdfbase import pdfmetrics
@@ -1248,7 +1249,7 @@ def create_tafsili_report_pdf(detailed_report):
     buffer = io.BytesIO()
     
     # Register Amiri font for Arabic text
-    amiri_font_path = r"C:\Users\USER\Downloads\Amiri-Regular.ttf"
+    amiri_font_path = r"Amiri-Regular.ttf"
     pdfmetrics.registerFont(TTFont('Amiri', amiri_font_path))
     
     doc = SimpleDocTemplate(

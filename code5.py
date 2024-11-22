@@ -21,10 +21,10 @@ import json
 openai.api_key = st.secrets["openai"] # Replace with your actual OpenAI API Key
 
 # Set Google Cloud Service Account credentials
-SERVICE_ACCOUNT_FILE = r"C:\Users\USER\Downloads\gcp_api.json"  # Update this path
+google_creds = st.secrets["google"]
 
-# Initialize Google Cloud clients
-credentials = service_account.Credentials.from_service_account_file(SERVICE_ACCOUNT_FILE)
+# Initialize the Google Cloud clients with the credentials
+credentials = service_account.Credentials.from_service_account_info(google_creds)
 speech_client = speech.SpeechClient(credentials=credentials)
 storage_client = storage.Client(credentials=credentials)
 

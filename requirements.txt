@@ -10,7 +10,6 @@ matplotlib
 opencv-python
 fuzzywuzzy
 scipy
-pypdf
 pdf_export
 reportlab 
 arabic-reshaper

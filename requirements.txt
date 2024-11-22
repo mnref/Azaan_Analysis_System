@@ -7,7 +7,7 @@ librosa
 numpy
 Pillow
 matplotlib
-opencv-python --headless
+opencv-python--headless
 fuzzywuzzy
 scipy
 python-pdf

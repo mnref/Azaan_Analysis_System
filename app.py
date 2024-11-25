@@ -20,6 +20,12 @@ import json
 # Set OpenAI API key
 openai.api_key = st.secrets["openai"] # Replace with your actual OpenAI API Key
 
+hide_taskbar = """
+<style?
+#tabindex {
+visibility:hidden
+}
+"""
 # Set Google Cloud Service Account credentials
 google_creds = st.secrets["google"]
 
@@ -1305,7 +1311,7 @@ def add_download_button(detailed_report):
 def main():
     set_page_config()
     load_css()
-    
+    st.markdown(hide_taskbar,unsafe_allow_html=True)
     # Header section remains same
     st.markdown("""
         <div style="text-align: center; padding: 2rem; background: linear-gradient(135deg, rgba(255,255,255,0.9), rgba(244,228,188,0.9)); 

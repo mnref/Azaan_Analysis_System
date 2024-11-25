@@ -17,16 +17,6 @@ from fuzzywuzzy import fuzz
 from scipy.stats import pearsonr
 import json
 
-hide_st_style = """
-            <style>
-            #MainMenu {visibility: hidden;}
-            footer {visibility: hidden;}
-            header {visibility: hidden;}
-            </style>
-            """
-st.markdown(hide_st_style, unsafe_allow_html=True)
-
-
 # Set OpenAI API key
 openai.api_key = st.secrets["openai"] # Replace with your actual OpenAI API Key
 

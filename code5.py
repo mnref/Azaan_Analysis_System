@@ -376,7 +376,7 @@ def diagnose_azaan(user_audio_path, expert_audio_path, user_transcription, exper
     }
 
 # Original Functions
-def upload_audio_to_gcs(file, bucket_name="azaanbucket"):
+def upload_audio_to_gcs(file, bucket_name="azaan_bucket"):
     with tempfile.NamedTemporaryFile(delete=False, suffix=".mp3") as temp_audio_file:
         temp_audio_file.write(file.getbuffer())
         temp_audio_file.flush()
@@ -1028,7 +1028,7 @@ def diagnose_azaan(user_audio_path, expert_audio_path, user_transcription, exper
     }
 
 # Original Functions
-def upload_audio_to_gcs(file, bucket_name="azaanbucket"):
+def upload_audio_to_gcs(file, bucket_name="azaan_bucket"):
     with tempfile.NamedTemporaryFile(delete=False, suffix=".mp3") as temp_audio_file:
         temp_audio_file.write(file.getbuffer())
         temp_audio_file.flush()

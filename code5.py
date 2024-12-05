@@ -18,60 +18,6 @@ from scipy.stats import pearsonr
 import json
 
 
-# Enhanced CSS to hide ALL Streamlit elements including bottom icons
-st.markdown("""
-    <style>
-        /* Hide Streamlit Decoration */
-        #MainMenu {visibility: hidden;}
-        header {visibility: hidden;}
-        footer {visibility: hidden;}
-        
-        /* Hide bottom app elements */
-        .stApp iframe[height="0"] {display: none;}
-        .stApp div[data-testid="stDecoration"] {display: none;}
-        .stApp div[data-testid="stToolbar"] {display: none;}
-        .stApp .streamlit-footer {display: none;}
-        .stApp div[data-testid="stStatusWidget"] {display: none;}
-        
-        /* Hide all iframe elements that might contain icons */
-        iframe {
-            display: none !important;
-        }
-        
-        /* Hide specific bottom elements */
-        div[data-testid="stBottomBlockButtons"] {display: none;}
-        .stHorizontalBlock {display: none;}
-        
-        /* Additional selectors for bottom icons */
-        section[data-testid="stBottomBlock"] {display: none;}
-        .streamlit-bottom {display: none;}
-        
-        /* Force remove any fixed positioned elements at bottom */
-        div[style*="position: fixed"][style*="bottom"] {display: none !important;}
-        
-        
-        /* Hide any remaining Streamlit elements */
-        .reportview-container .main footer {display: none;}
-        .reportview-container .main .block-container {padding-bottom: 0;}
-    </style>
-""", unsafe_allow_html=True)
-
-st.markdown("""
-    <style>
-        img {
-            pointer-events: none; /* Disable click behavior */
-        }
-    </style>
-""", unsafe_allow_html=True)
-
-
-# Add this to remove default Streamlit menu items
-st.markdown("""
-    <script>
-        var elements = window.parent.document.querySelectorAll('.stApp [data-testid="stToolbar"]')
-        elements[0].remove()
-    </script>
-""", unsafe_allow_html=True)
 # Set OpenAI API key
 openai.api_key = st.secrets["openai"] # Replace with your actual OpenAI API Key
 
@@ -565,6 +511,63 @@ import streamlit as st
 from streamlit.components.v1 import html
 import base64
 from pathlib import Path
+
+# Enhanced CSS to hide ALL Streamlit elements including bottom icons
+st.markdown("""
+    <style>
+        /* Hide Streamlit Decoration */
+        #MainMenu {visibility: hidden;}
+        header {visibility: hidden;}
+        footer {visibility: hidden;}
+        
+        /* Hide bottom app elements */
+        .stApp iframe[height="0"] {display: none;}
+        .stApp div[data-testid="stDecoration"] {display: none;}
+        .stApp div[data-testid="stToolbar"] {display: none;}
+        .stApp .streamlit-footer {display: none;}
+        .stApp div[data-testid="stStatusWidget"] {display: none;}
+        
+        /* Hide all iframe elements that might contain icons */
+        iframe {
+            display: none !important;
+        }
+        
+        /* Hide specific bottom elements */
+        div[data-testid="stBottomBlockButtons"] {display: none;}
+        .stHorizontalBlock {display: none;}
+        
+        /* Additional selectors for bottom icons */
+        section[data-testid="stBottomBlock"] {display: none;}
+        .streamlit-bottom {display: none;}
+        
+        /* Force remove any fixed positioned elements at bottom */
+        div[style*="position: fixed"][style*="bottom"] {display: none !important;}
+        
+        
+        /* Hide any remaining Streamlit elements */
+        .reportview-container .main footer {display: none;}
+        .reportview-container .main .block-container {padding-bottom: 0;}
+    </style>
+""", unsafe_allow_html=True)
+
+st.markdown("""
+    <style>
+        img {
+            pointer-events: none; /* Disable click behavior */
+        }
+    </style>
+""", unsafe_allow_html=True)
+
+
+# Add this to remove default Streamlit menu items
+st.markdown("""
+    <script>
+        var elements = window.parent.document.querySelectorAll('.stApp [data-testid="stToolbar"]')
+        elements[0].remove()
+    </script>
+""", unsafe_allow_html=True)
+
+
 
 def set_page_config():
     st.set_page_config(

@@ -10,6 +10,7 @@ import librosa
 import librosa.display
 import numpy as np
 from PIL import Image
+
 import matplotlib.pyplot as plt
 import cv2
 from io import BytesIO
@@ -569,13 +570,13 @@ st.markdown("""
 
 
 
-def set_page_config():
-    st.set_page_config(
-        page_title="Azaan Analysis System",
-        page_icon="🕌",
-        layout="wide",
-        initial_sidebar_state="collapsed"
-    )
+# def set_page_config():
+#     st.set_page_config(
+#         page_title="Azaan Analysis System",
+#         page_icon="🕌",
+#         layout="wide",
+#         initial_sidebar_state="collapsed"
+#     )
 
 def load_css():
     st.markdown("""

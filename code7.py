@@ -1235,6 +1235,8 @@ import arabic_reshaper
 from bidi.algorithm import get_display
 import os
 import io
+import uuid
+import datetime
 
 def setup_arabic_font():
     # Register Arabic font - ensure this font file exists in your project

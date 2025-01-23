@@ -1290,207 +1290,155 @@ def create_tafsili_report_pdf(detailed_report):
     buffer.seek(0)
     return buffer
 
+def create_pdf_url(pdf_buffer):
+    # Convert PDF buffer to base64
+    base64_pdf = base64.b64encode(pdf_buffer.getvalue()).decode('utf-8')
+    
+    # Create HTML with PDF viewer
+    pdf_display = f'''
+        <iframe src="data:application/pdf;base64,{base64_pdf}" width="100%" height="800px" type="application/pdf"></iframe>
+    '''
+    return pdf_display
+
 def add_download_button(detailed_report):
-    # Generate PDF
     pdf_buffer = create_tafsili_report_pdf(detailed_report)
     
-    # Create download button
+    # Create PDF viewer
+    pdf_url = create_pdf_url(pdf_buffer)
+    st.markdown(pdf_url, unsafe_allow_html=True)
+    
+    # Keep download button
     st.download_button(
-        label="📥 Download Tafsili Report (PDF)",
+        label="📥 Download Report",
         data=pdf_buffer,
         file_name="tafsili_report.pdf",
-        mime="application/pdf",
-        help="Download the detailed analysis report in PDF format"
+        mime="application/pdf"
     )
-
 def main():
-    set_page_config()
-    load_css()
-    # Header section remains same
-    st.markdown("""
-        <div style="text-align: center; padding: 2rem; background: linear-gradient(135deg, rgba(255,255,255,0.9), rgba(244,228,188,0.9)); 
-                    border-radius: 15px; margin-bottom: 2rem; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
-            <h1 style="color: #234e70; font-size: 2.5em; margin-bottom: 0.5rem;">🕌 Azaan Analysis System</h1>
-            <p style="color: #4a4238; font-size: 1.2em; font-style: italic;">
-                "Indeed, the most beautiful among you are those who have the most beautiful voices in reciting the Azaan"
-            </p>
-            <div style="background: #1ca4a4; height: 3px; width: 150px; margin: 1rem auto;"></div>
-        </div>
-    """, unsafe_allow_html=True)
+   set_page_config()
+   load_css()
+   
+   st.markdown("""
+       <div style="text-align: center; padding: 2rem; background: linear-gradient(135deg, rgba(255,255,255,0.9), rgba(244,228,188,0.9)); 
+                   border-radius: 15px; margin-bottom: 2rem; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+           <h1 style="color: #234e70; font-size: 2.5em; margin-bottom: 0.5rem;">🕌 Azaan Analysis System</h1>
+           <p style="color: #4a4238; font-size: 1.2em; font-style: italic;">
+               "Indeed, the most beautiful among you are those who have the most beautiful voices in reciting the Azaan"
+           </p>
+           <div style="background: #1ca4a4; height: 3px; width: 150px; margin: 1rem auto;"></div>
+       </div>
+   """, unsafe_allow_html=True)
 
-    # Enhanced CSS to hide ALL Streamlit elements including bottom icons
-    st.markdown("""
-        <style>
-            /* Hide Streamlit Decoration */
-            #MainMenu {visibility: hidden;}
-            header {visibility: hidden;}
-            footer {visibility: hidden;}
-    
-            /* Hide bottom app elements */
-            .stApp iframe[height="0"] {display: none;}
-            .stApp div[data-testid="stDecoration"] {display: none;}
-            .stApp div[data-testid="stToolbar"] {display: none;}
-            .stApp .streamlit-footer {display: none;}
-            .stApp div[data-testid="stStatusWidget"] {display: none;}
-    
-            /* Hide all iframe elements that might contain icons */
-            iframe {
-                display: none !important;
-            }
-    
-            /* Hide specific bottom elements */
-            div[data-testid="stBottomBlockButtons"] {display: none;}
-            .stHorizontalBlock {display: none;}
-    
-            /* Additional selectors for bottom icons */
-            section[data-testid="stBottomBlock"] {display: none;}
-            .streamlit-bottom {display: none;}
-    
-            /* Force remove any fixed positioned elements at bottom /
-            div[style="position: fixed"][style*="bottom"] {display: none !important;}
-    
-            /* Hide any remaining Streamlit elements /
-            .reportview-container .main footer {display: none;}
-            .reportview-container .main .block-container {padding-bottom: 0;}
-        </style>
-    """, unsafe_allow_html=True)
-    st.markdown("""
-        <style>
-            img {
-                pointer-events: none; / Disable click behavior */
-            }
-        </style>
-    """, unsafe_allow_html=True)
-    # Add this to remove default Streamlit menu items
-    st.markdown("""
-        <script>
-            var elements = window.parent.document.querySelectorAll('.stApp [data-testid="stToolbar"]')
-            elements[0].remove()
-        </script>
-    """, unsafe_allow_html=True)
+   st.markdown("""
+       <div style="background: white; padding: 2rem; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); 
+                   text-align: center; margin-bottom: 2rem;">
+           <h2 style="color: #1ca4a4; margin-bottom: 1rem;">Upload Your Azaan Recording</h2>
+           <p style="color: #4a4238;">Please upload your Azaan recording in MP3 format</p>
+       </div>
+   """, unsafe_allow_html=True)
 
-    st.markdown("""
-        <div style="background: white; padding: 2rem; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); 
-                    text-align: center; margin-bottom: 2rem;">
-            <h2 style="color: #1ca4a4; margin-bottom: 1rem;">Upload Your Azaan Recording</h2>
-            <p style="color: #4a4238;">Please upload your Azaan recording in MP3 format</p>
-        </div>
-    """, unsafe_allow_html=True)
-
-    uploaded_file = st.file_uploader("Choose an MP3 file", type=["mp3"])
-    
-    if uploaded_file:
-        progress_placeholder = st.empty()
-        progress_bar = st.progress(0)
-        status_text = st.empty()
-        
-        try:
-            with st.spinner("📤 Uploading audio..."):
-                gcs_uri = upload_audio_to_gcs(uploaded_file)
-                progress_bar.progress(25)
-                status_text.text("✅ Audio uploaded successfully")
-            
-            with st.spinner("🔍 Transcribing and validating..."):
-                transcription = transcribe_audio_gcs(gcs_uri)
-                validation_result = validate_with_openai(transcription)
-                progress_bar.progress(50)
-                status_text.text("✅ Transcription and validation complete")
-            
-            if "Validation Status: VALIDATED" in validation_result:
-                with st.spinner("⚡ Analyzing audio patterns..."):
-                    downloaded_audio_path = download_audio_from_gcs(gcs_uri)
-                    progress_bar.progress(75)
-                    
-                    user_spectrogram, user_sr = generate_mel_spectrogram(downloaded_audio_path)
-                    user_spectrogram_img = plot_spectrogram(user_spectrogram, user_sr)
-                    
-                    if user_spectrogram_img is not None:
-                        progress_bar.progress(85)
-                        status_text.text("📊 Generating detailed analysis...")
-                        
-                        user_image = np.array(Image.open(user_spectrogram_img))
-                        similarities = {}
-                        
-                        for muezzin, predefined_spectrogram in predefined_spectrograms.items():
-                            if predefined_spectrogram is not None:
-                                similarity_score = calculate_similarity(user_image, predefined_spectrogram)
-                                similarities[muezzin] = similarity_score
-                        
-                        if similarities:
-                            closest_muezzin = min(similarities, key=similarities.get)
-                            
-                            diagnosis_result = diagnose_azaan(
-                                downloaded_audio_path,
-                                expert_audio_paths[closest_muezzin],
-                                transcription,
-                                expert_transcriptions[closest_muezzin],
-                                closest_muezzin
-                            )
-                            
-                            progress_bar.progress(100)
-                            status_text.text("✨ Analysis complete!")
-                            
-                            # Display results
-                            st.markdown("""
-                                <div style="text-align: center; margin: 2rem 0;">
-                                    <h2 style="color: #1ca4a4;">Analysis Results</h2>
-                                    <div style="background: #1ca4a4; height: 3px; width: 100px; margin: 1rem auto;"></div>
-                                </div>
-                            """, unsafe_allow_html=True)
-                            
-                            st.markdown(f"""
-                                <div style="background: white; padding: 1.5rem; border-radius: 15px; 
-                                          box-shadow: 0 4px 15px rgba(0,0,0,0.1); text-align: center; margin-bottom: 2rem;">
-                                    <h3 style="color: #234e70;">Matching Analysis</h3>
-                                    <p style="color: #1ca4a4; font-size: 1.2em; margin: 1rem 0;">
-                                        MashaAllah! Your recitation style closely matches {closest_muezzin}'s pattern
-                                    </p>
-                                </div>
-                            """, unsafe_allow_html=True)
-                            
-                            display_voice_quality_analysis(diagnosis_result)
-                            
-                            # Add download button for PDF report
-                            if 'detailed_report' in diagnosis_result:
-                                add_download_button(diagnosis_result['detailed_report'])
-                            
-                            # Display spectrograms
-                            # st.markdown("""
-                            #     <div style="text-align: center; margin: 2rem 0;">
-                            #         <h3 style="color: #234e70;">Visual Pattern Comparison</h3>
-                            #     </div>
-                            # """, unsafe_allow_html=True)
-                            
-                            # vis_col1, vis_col2 = st.columns(2)
-                            
-                            # with vis_col1:
-                            #     st.image(user_spectrogram_img, caption="Your Recitation Pattern")
-                            
-                            # with vis_col2:
-                            #     st.image(predefined_spectrograms[closest_muezzin], 
-                            #            caption=f"{closest_muezzin}'s Pattern")
-                            
-                            st.markdown("""
-                                <div style="text-align: center; margin-top: 3rem; padding: 1rem; color: #4a4238;">
-                                    <p>May Allah accept your efforts in perfecting the call to prayer.</p>
-                                    <div style="background: #1ca4a4; height: 2px; width: 100px; margin: 1rem auto;"></div>
-                                </div>
-                            """, unsafe_allow_html=True)
-                        
-                        else:
-                            st.error("Unable to perform pattern matching. Please try again.")
-                    else:
-                        st.error("Error generating audio visualization.")
-            else:
-                st.error("""
-                    Validation Failed! Please ensure your recording follows the correct Azaan structure.
-                    Check if all essential phrases are present and in the correct order.
-                """)
-        
-        except Exception as e:
-            st.error(f"An error occurred during analysis: {str(e)}")
-            progress_bar.empty()
-            status_text.empty()
+   uploaded_file = st.file_uploader("Choose an MP3 file", type=["mp3"])
+   
+   if uploaded_file:
+       progress_placeholder = st.empty()
+       progress_bar = st.progress(0)
+       status_text = st.empty()
+       
+       try:
+           with st.spinner("📤 Uploading audio..."):
+               gcs_uri = upload_audio_to_gcs(uploaded_file)
+               progress_bar.progress(25)
+               status_text.text("✅ Audio uploaded successfully")
+           
+           with st.spinner("🔍 Transcribing and validating..."):
+               transcription = transcribe_audio_gcs(gcs_uri)
+               validation_result = validate_with_openai(transcription)
+               progress_bar.progress(50)
+               status_text.text("✅ Transcription and validation complete")
+           
+           if "Validation Status: VALIDATED" in validation_result:
+               with st.spinner("⚡ Analyzing audio patterns..."):
+                   downloaded_audio_path = download_audio_from_gcs(gcs_uri)
+                   progress_bar.progress(75)
+                   
+                   user_spectrogram, user_sr = generate_mel_spectrogram(downloaded_audio_path)
+                   user_spectrogram_img = plot_spectrogram(user_spectrogram, user_sr)
+                   
+                   if user_spectrogram_img is not None:
+                       progress_bar.progress(85)
+                       status_text.text("📊 Generating detailed analysis...")
+                       
+                       user_image = np.array(Image.open(user_spectrogram_img))
+                       similarities = {}
+                       
+                       for muezzin, predefined_spectrogram in predefined_spectrograms.items():
+                           if predefined_spectrogram is not None:
+                               similarity_score = calculate_similarity(user_image, predefined_spectrogram)
+                               similarities[muezzin] = similarity_score
+                       
+                       if similarities:
+                           closest_muezzin = min(similarities, key=similarities.get)
+                           
+                           diagnosis_result = diagnose_azaan(
+                               downloaded_audio_path,
+                               expert_audio_paths[closest_muezzin],
+                               transcription,
+                               expert_transcriptions[closest_muezzin],
+                               closest_muezzin
+                           )
+                           
+                           progress_bar.progress(100)
+                           status_text.text("✨ Analysis complete!")
+                           
+                           st.markdown("""
+                               <div style="text-align: center; margin: 2rem 0;">
+                                   <h2 style="color: #1ca4a4;">Analysis Results</h2>
+                                   <div style="background: #1ca4a4; height: 3px; width: 100px; margin: 1rem auto;"></div>
+                               </div>
+                           """, unsafe_allow_html=True)
+                           
+                           st.markdown(f"""
+                               <div style="background: white; padding: 1.5rem; border-radius: 15px; 
+                                         box-shadow: 0 4px 15px rgba(0,0,0,0.1); text-align: center; margin-bottom: 2rem;">
+                                   <h3 style="color: #234e70;">Matching Analysis</h3>
+                                   <p style="color: #1ca4a4; font-size: 1.2em; margin: 1rem 0;">
+                                       MashaAllah! Your recitation style closely matches {closest_muezzin}'s pattern
+                                   </p>
+                               </div>
+                           """, unsafe_allow_html=True)
+                           
+                           display_voice_quality_analysis(diagnosis_result)
+                           
+                           # Updated PDF section
+                           if 'detailed_report' in diagnosis_result:
+                               st.markdown("""
+                                   <div style="margin: 2rem 0;">
+                                       <h3 style="color: #234e70;">Detailed Report</h3>
+                                   </div>
+                               """, unsafe_allow_html=True)
+                               add_download_button(diagnosis_result['detailed_report'])
+                           
+                           st.markdown("""
+                               <div style="text-align: center; margin-top: 3rem; padding: 1rem; color: #4a4238;">
+                                   <p>May Allah accept your efforts in perfecting the call to prayer.</p>
+                                   <div style="background: #1ca4a4; height: 2px; width: 100px; margin: 1rem auto;"></div>
+                               </div>
+                           """, unsafe_allow_html=True)
+                       
+                       else:
+                           st.error("Unable to perform pattern matching. Please try again.")
+                   else:
+                       st.error("Error generating audio visualization.")
+           else:
+               st.error("""
+                   Validation Failed! Please ensure your recording follows the correct Azaan structure.
+                   Check if all essential phrases are present and in the correct order.
+               """)
+       
+       except Exception as e:
+           st.error(f"An error occurred during analysis: {str(e)}")
+           progress_bar.empty()
+           status_text.empty()
 
 if __name__ == "__main__":
-    main()
+   main()

@@ -586,7 +586,7 @@ import io
 
 def setup_arabic_font():
     # Register Arabic font - ensure this font file exists in your project
-    font_path = r"C:\Users\USER\Downloads\Amiri-Regular.ttf"  # Update with actual path
+    font_path = "Amiri-Regular.ttf"  # Update with actual path
     pdfmetrics.registerFont(TTFont('Arabic', font_path))
     
 from reportlab.pdfbase import pdfmetrics
@@ -597,7 +597,7 @@ def create_tafsili_report_pdf(detailed_report):
     buffer = io.BytesIO()
     
     # Register Amiri font for Arabic text
-    amiri_font_path = r"C:\Users\USER\Downloads\Amiri-Regular.ttf"
+    amiri_font_path = "Amiri-Regular.ttf"
     pdfmetrics.registerFont(TTFont('Amiri', amiri_font_path))
     
     doc = SimpleDocTemplate(
@@ -670,9 +670,8 @@ from fuzzywuzzy import fuzz
 from scipy.stats import pearsonr
 import json
 
-# Set OpenAI API key
-openai.api_key = st.secrets["openai"] # Replace with your actual OpenAI API Key
 
+openai.api_key = st.secrets["openai"] # Replace with your actual OpenAI API Key
 
 # Set Google Cloud Service Account credentials
 google_creds = st.secrets["google"]
@@ -682,11 +681,11 @@ credentials = service_account.Credentials.from_service_account_info(google_creds
 speech_client = speech.SpeechClient(credentials=credentials)
 storage_client = storage.Client(credentials=credentials)
 
-# Predefined data
+
 predefined_spectrograms = {
-    'Muazzin Imran': cv2.imread("qari imran.jpg"),
-    'Muazzin Mishary': cv2.imread("mufti meshiry.jpg"),
-    'Muazzin Mufti Menk': cv2.imread("mufti menk.jpg"),
+    'Muazzin Imran': cv2.imread("Qari Imran.jpg"),
+    'Muazzin Mishary': cv2.imread("Mufti Mishary.jpg"),
+    'Muazzin Mufti Menk': cv2.imread("Mufti Menk.jpg"),
 }
 
 expert_audio_paths = {
@@ -735,124 +734,24 @@ def extract_audio_features(audio_path):
         }
     }
 
-import openai
-import tempfile
-import os
-from pathlib import Path
-import base64
-import streamlit as st
-
-def generate_audio_feedback(text):
-    """
-    Generate audio feedback using OpenAI's TTS API.
-    """
-    # Initialize OpenAI with your API key
-    openai.api_key = st.secrets["openai"] # Replace with your actual OpenAI API Key
-    try:
-        # Create temporary file path
-        temp_dir = tempfile.mkdtemp()
-        audio_path = os.path.join(temp_dir, "feedback_audio.mp3")
-
-        # Generate speech using OpenAI API
-        response = openai.Audio.create(
-            model="tts-1",
-            voice="shimmer",
-            input=text
-        )
-
-        # Save the audio file
-        with open(audio_path, 'wb') as audio_file:
-            audio_file.write(response.content)
-
-        return audio_path
-
-    except Exception as e:
-        st.error(f"Error generating audio: {str(e)}")
-        return None
-
-def create_audio_element(audio_path):
-    """
-    Create an HTML audio element for the feedback
-    """
-    try:
-        with open(audio_path, "rb") as audio_file:
-            audio_bytes = audio_file.read()
-            audio_base64 = base64.b64encode(audio_bytes).decode()
-            
-            return f"""
-                <div style="background-color: #f5f5f5; padding: 10px; border-radius: 10px; margin: 10px 0;">
-                    <audio controls style="width: 100%;">
-                        <source src="data:audio/mp3;base64,{audio_base64}" type="audio/mp3">
-                        Your browser does not support the audio element.
-                    </audio>
-                </div>
-            """
-    except Exception as e:
-        st.error(f"Error creating audio element: {str(e)}")
-        return None
-
-def display_audio_feedback(diagnosis_result):
-    """
-    Display the analysis results with audio feedback
-    """
-    if 'detailed_report' in diagnosis_result:
-        sections = {
-            "Pronunciation Analysis": "Let's start with your pronunciation analysis.",
-            "Voice Quality": "Now, let's look at your voice quality.",
-            "Special Points": "Here are some special points about your recitation.",
-            "Overall Assessment": "Finally, here's your overall assessment."
-        }
-
-        st.markdown("""
-            <div style="background: white; padding: 2rem; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
-                <h3 style="color: #234e70; text-align: center;">Audio Feedback</h3>
-            </div>
-        """, unsafe_allow_html=True)
-
-        for section_title, intro_text in sections.items():
-            st.markdown(f"### {section_title}")
-            
-            # Generate audio feedback for this section
-            feedback_text = f"{intro_text}\n{diagnosis_result['detailed_report']}"
-            audio_path = generate_audio_feedback(feedback_text)
-            
-            if audio_path:
-                audio_element = create_audio_element(audio_path)
-                if audio_element:
-                    st.markdown(audio_element, unsafe_allow_html=True)
-                
-                # Clean up temporary file
-                try:
-                    os.remove(audio_path)
-                except:
-                    pass
-                
-def display_detailed_report_with_audio(diagnosis_result):
+def display_pronunciation_analysis(diagnosis_result):
     st.markdown("""
-        <div style="background: white; padding: 2rem; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
-            <h2 style="color: #234e70; text-align: center;">Detailed Analysis Report</h2>
-        </div>
+        <div style="background: white; padding: 2rem; border-radius: 15px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);">
+            <h3 style="color: #234e70; margin-bottom: 1rem;">Talaffuz ka Jaiza (Pronunciation Analysis)</h3>
+            <div style="border-left: 4px solid #1ca4a4; padding-left: 1rem; margin: 1rem 0;">
     """, unsafe_allow_html=True)
-
-    # Display regular analysis
-    display_pronunciation_analysis(diagnosis_result)
-    display_voice_quality_analysis(diagnosis_result)
     
-    # Add audio feedback
-    display_audio_feedback(diagnosis_result)
-
-    # Add download button for PDF report
-    if 'detailed_report' in diagnosis_result:
-        try:
-            pdf_buffer = create_tafsili_report_pdf(diagnosis_result['detailed_report'])
-            st.download_button(
-                label="📥 Download Complete Report (PDF)",
-                data=pdf_buffer,
-                file_name="azaan_analysis_report.pdf",
-                mime="application/pdf"
-            )
-        except Exception as e:
-            st.error(f"Error generating PDF: {str(e)}")
+    if 'pronunciation_analysis' in diagnosis_result:
+        for issue in diagnosis_result['pronunciation_analysis']:
+            st.markdown(f"""
+                <div style="margin: 0.5rem 0;">
+                    <span style="color: #1ca4a4;">Word {issue['word_number']}</span>: 
+                    <span style="color: #d4af37;">{issue['user_word']}</span> → 
+                    <span style="color: #234e70;">{issue['correct_word']}</span>
+                </div>
+            """, unsafe_allow_html=True)
+    
+    st.markdown("</div></div>", unsafe_allow_html=True)
 
 def display_voice_quality_analysis(diagnosis_result):
     st.markdown("""
@@ -1339,19 +1238,18 @@ import io
 
 def setup_arabic_font():
     # Register Arabic font - ensure this font file exists in your project
-    font_path = r"C:\Users\USER\Downloads\Amiri-Regular.ttf"  # Update with actual path
+    font_path = r"Amiri-Regular.ttf"  # Update with actual path
     pdfmetrics.registerFont(TTFont('Arabic', font_path))
     
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 import os
-import datetime
-import uuid
+
 def create_tafsili_report_pdf(detailed_report):
     buffer = io.BytesIO()
     
     # Register Amiri font for Arabic text
-    amiri_font_path = r"C:\Users\USER\Downloads\Amiri-Regular.ttf"
+    amiri_font_path = r"Amiri-Regular.ttf"
     pdfmetrics.registerFont(TTFont('Amiri', amiri_font_path))
     
     doc = SimpleDocTemplate(

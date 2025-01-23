@@ -288,7 +288,7 @@ def generate_diagnosis_report(audio_comparison, pronunciation_analysis, closest_
     
     try:
         response = openai.ChatCompletion.create(
-            model="gpt-4o-mini",
+            model="gpt-4",
             messages=[{
                 "role": "user", 
                 "content": prompt
@@ -320,7 +320,7 @@ def generate_diagnosis_report(audio_comparison, pronunciation_analysis, closest_
         """
         
         pattern_response = openai.ChatCompletion.create(
-            model="gpt-4o-mini",
+            model="gpt-4",
             messages=[
                 {"role": "assistant", "content": basic_analysis},
                 {"role": "user", "content": pattern_prompt}
@@ -467,7 +467,7 @@ def validate_with_openai(transcription):
 
     try:
         response = openai.ChatCompletion.create(
-            model="gpt-4o-mini",
+            model="gpt-4",
             messages=[{"role": "user", "content": prompt}],
             temperature=0.2,
             max_tokens=250,
@@ -1041,7 +1041,7 @@ def generate_diagnosis_report(audio_comparison, pronunciation_analysis, closest_
     
     try:
         response = openai.ChatCompletion.create(
-            model="gpt-4o-mini",
+            model="gpt-4",
             messages=[{
                 "role": "user", 
                 "content": prompt
@@ -1073,7 +1073,7 @@ def generate_diagnosis_report(audio_comparison, pronunciation_analysis, closest_
         """
         
         pattern_response = openai.ChatCompletion.create(
-            model="gpt-4o-mini",
+            model="gpt-4",
             messages=[
                 {"role": "assistant", "content": basic_analysis},
                 {"role": "user", "content": pattern_prompt}
@@ -1220,7 +1220,7 @@ def validate_with_openai(transcription):
 
     try:
         response = openai.ChatCompletion.create(
-            model="gpt-4o-mini",
+            model="gpt-4",
             messages=[{"role": "user", "content": prompt}],
             temperature=0.2,
             max_tokens=250,

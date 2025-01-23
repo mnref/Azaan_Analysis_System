@@ -1293,24 +1293,35 @@ def create_tafsili_report_pdf(detailed_report):
 def create_pdf_url(pdf_buffer):
     base64_pdf = base64.b64encode(pdf_buffer.getvalue()).decode('utf-8')
     html = f'''
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>
-        <div id="pdfViewer" style="width: 100%; height: 800px;">
-            <canvas id="pdfCanvas"></canvas>
-        </div>
-        <script>
-            pdfjsLib.getDocument({{data: atob("{base64_pdf}")}}).promise.then(pdf => {{
-                pdf.getPage(1).then(page => {{
-                    const canvas = document.getElementById("pdfCanvas");
-                    const ctx = canvas.getContext("2d");
-                    const viewport = page.getViewport({{scale: 1.5}});
-                    canvas.height = viewport.height;
-                    canvas.width = viewport.width;
-                    page.render({{canvasContext: ctx, viewport: viewport}});
+        <div style="width: 100%; height: 800px; overflow-y: auto; background-color: #f5f5f5; padding: 20px;">
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>
+            <div id="pdfContainer" style="width: 100%; display: flex; flex-direction: column; align-items: center;">
+            </div>
+            <script>
+                pdfjsLib.getDocument({{data: atob("{base64_pdf}")}}).promise.then(pdf => {{
+                    const numPages = pdf.numPages;
+                    for(let i = 1; i <= numPages; i++) {{
+                        const canvas = document.createElement('canvas');
+                        canvas.id = page-${{i}};
+                        canvas.style.marginBottom = '20px';
+                        document.getElementById('pdfContainer').appendChild(canvas);
+                        
+                        pdf.getPage(i).then(page => {{
+                            const viewport = page.getViewport({{scale: 1.5}});
+                            canvas.height = viewport.height;
+                            canvas.width = viewport.width;
+                            page.render({{
+                                canvasContext: canvas.getContext('2d'),
+                                viewport: viewport
+                            }});
+                        }});
+                    }}
                 }});
-            }});
-        </script>
+            </script>
+        </div>
     '''
     st.components.v1.html(html, height=800)
+
 def add_download_button(detailed_report):
     pdf_buffer = create_tafsili_report_pdf(detailed_report)
     

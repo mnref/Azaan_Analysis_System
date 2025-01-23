@@ -31,9 +31,9 @@ storage_client = storage.Client(credentials=credentials)
 
 # Predefined data
 predefined_spectrograms = {
-    'Muazzin Imran': cv2.imread("qari imran.jpg"),
-    'Muazzin Mishary': cv2.imread("mufti meshiry.jpg"),
-    'Muazzin Mufti Menk': cv2.imread("mufti menk.jpg"),
+    'Muazzin Imran': cv2.imread("Qari Imran.jpg"),
+    'Muazzin Mishary': cv2.imread("Mufti Mishary.jpg"),
+    'Muazzin Mufti Menk': cv2.imread("Mufti Menk.jpg"),
 }
 
 expert_audio_paths = {

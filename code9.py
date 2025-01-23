@@ -1292,17 +1292,25 @@ def create_tafsili_report_pdf(detailed_report):
 
 def create_pdf_url(pdf_buffer):
     base64_pdf = base64.b64encode(pdf_buffer.getvalue()).decode('utf-8')
-    pdf_display = f'''
-        <div style="display: flex; justify-content: center; width: 100%;">
-            <iframe src="data:application/pdf;base64,{base64_pdf}"
-                    style="width: 100%; height: 800px; border: none;">
-            </iframe>
-            <embed src="data:application/pdf;base64,{base64_pdf}"
-                   style="width: 100%; height: 800px;"
-                   type="application/pdf">
+    html = f'''
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>
+        <div id="pdfViewer" style="width: 100%; height: 800px;">
+            <canvas id="pdfCanvas"></canvas>
         </div>
+        <script>
+            pdfjsLib.getDocument({{data: atob("{base64_pdf}")}}).promise.then(pdf => {{
+                pdf.getPage(1).then(page => {{
+                    const canvas = document.getElementById("pdfCanvas");
+                    const ctx = canvas.getContext("2d");
+                    const viewport = page.getViewport({{scale: 1.5}});
+                    canvas.height = viewport.height;
+                    canvas.width = viewport.width;
+                    page.render({{canvasContext: ctx, viewport: viewport}});
+                }});
+            }});
+        </script>
     '''
-    st.components.v1.html(pdf_display, height=800, scrolling=True)
+    st.components.v1.html(html, height=800)
 def add_download_button(detailed_report):
     pdf_buffer = create_tafsili_report_pdf(detailed_report)
     

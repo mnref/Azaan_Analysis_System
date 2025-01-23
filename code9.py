@@ -1291,15 +1291,18 @@ def create_tafsili_report_pdf(detailed_report):
     return buffer
 
 def create_pdf_url(pdf_buffer):
-    # Convert PDF buffer to base64
     base64_pdf = base64.b64encode(pdf_buffer.getvalue()).decode('utf-8')
-    
-    # Create HTML with PDF viewer
     pdf_display = f'''
-        <iframe src="data:application/pdf;base64,{base64_pdf}" width="100%" height="800px" type="application/pdf"></iframe>
+        <div style="display: flex; justify-content: center; width: 100%;">
+            <iframe src="data:application/pdf;base64,{base64_pdf}"
+                    style="width: 100%; height: 800px; border: none;">
+            </iframe>
+            <embed src="data:application/pdf;base64,{base64_pdf}"
+                   style="width: 100%; height: 800px;"
+                   type="application/pdf">
+        </div>
     '''
-    return pdf_display
-
+    st.components.v1.html(pdf_display, height=800, scrolling=True)
 def add_download_button(detailed_report):
     pdf_buffer = create_tafsili_report_pdf(detailed_report)
     

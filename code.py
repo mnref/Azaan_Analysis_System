@@ -31,19 +31,19 @@ storage_client = storage.Client(credentials=credentials)
 
 # Predefined data
 predefined_spectrograms = {
-    'Muazzin Imran': cv2.imread("Qari Imran.jpg"),
+    'Qari Imran ': cv2.imread("Qari Imran.jpg"),
     'Muazzin Mishary': cv2.imread("Mufti Mishary.jpg"),
     'Muazzin Mufti Menk': cv2.imread("Mufti Menk.jpg"),
 }
 
 expert_audio_paths = {
-    'Muazzin Imran': "Zohar macca.mp3",
+    'Qari Imran ': "Zohar macca.mp3",
     'Muazzin Mishary': "zohar by sheik mishary.mp3",
     'Muazzin Mufti Menk': "Zohar.mp3",
 }
 
 expert_transcriptions = {
-    'Muazzin Imran': """الله أكبر الله أكبر الله أكبر الله أكبر أشهد أن لا إله إلا الله أشهد أن لا إله إلا الله أشهد أن محمدا رسول الله أشهد أن محمدا رسول الله حي على الصلاة حي على الصلاة حي على الفلاح حي على الفلاح الله أكبر الله أكبر لا إله إلا الله""",
+    'Qari Imran ': """الله أكبر الله أكبر الله أكبر الله أكبر أشهد أن لا إله إلا الله أشهد أن لا إله إلا الله أشهد أن محمدا رسول الله أشهد أن محمدا رسول الله حي على الصلاة حي على الصلاة حي على الفلاح حي على الفلاح الله أكبر الله أكبر لا إله إلا الله""",
     'Muazzin Mishary': """الله أكبر الله أكبر الله أكبر الله أكبر أشهد أن لا إله إلا الله أشهد أن لا إله إلا الله أشهد أن محمدا رسول الله أشهد أن محمدا رسول الله حي على الصلاة حي على الصلاة حي على الفلاح حي على الفلاح الله أكبر الله أكبر لا إله إلا الله""",
     'Muazzin Mufti Menk': """الله أكبر الله أكبر الله أكبر الله أكبر أشهد أن لا إله إلا الله أشهد أن لا إله إلا الله أشهد أن محمدا رسول الله أشهد أن محمدا رسول الله حي على الصلاة حي على الصلاة حي على الفلاح حي على الفلاح الله أكبر الله أكبر لا إله إلا الله"""
 }
